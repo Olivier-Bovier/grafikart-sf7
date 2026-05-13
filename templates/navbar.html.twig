@@ -1,0 +1,15 @@
+<nav class="navbar bg-primary navbar-expand-lg" data-bs-theme="dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{{ path('home') }}">MonSite</a>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link {{ app.current_route == 'home' ? 'active' : '' }}" href="{{ path('home') }}">Accueil</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link {{ app.current_route == 'contact' ? 'active' : '' }}" href="{{ path('contact') }}">Contact</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>

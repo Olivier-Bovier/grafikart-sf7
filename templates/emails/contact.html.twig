@@ -1,0 +1,15 @@
+<p>
+Une nouvelle demande de contact a été recueillie depuis le formulaire de contact du site web. Voici les détails de la demande :
+</p>
+
+<ul>
+    <li><strong>Nom :</strong> {{ contactFormDTO.name }}</li>
+    <li><strong>Email :</strong> {{ contactFormDTO.email }}</li>
+    <li><strong>Service concerné :</strong> {{ contactFormDTO.service }}</li>
+</ul>
+
+<p>
+    <strong>Message :</strong> <br>
+    {{ contactFormDTO.message|nl2br }}
+</p>
+
