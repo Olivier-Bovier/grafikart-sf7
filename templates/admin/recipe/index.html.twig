@@ -5,35 +5,52 @@
 {% block body %}
     <p>
         <a class="btn btn-primary btn-sm" href="{{ url('admin.recipe.create') }}">Créer une nouvelle recette</a>
+    </p>
     <table class="table">
-    <thead>
-        <tr>
-            <th>Titre</th>
-            <th>Catégorie</th>
-            <th style="width: 200px;">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for recipe in recipes %}
+        <thead>
             <tr>
-                <td>
-                    <a href="{{ url('admin.recipe.edit', {id: recipe.id }) }}">{{ recipe.title }}</a>
-                </td>
-                <td>
-                    {{ recipe.category.name | default('') }}
-                </td>
-                <td>
-                    <div class="d-flex gap-1">
-                        <a class="btn btn-primary btn-sm" href="{{ url('admin.recipe.edit', {id: recipe.id }) }}">Editer</a>
-                        <form action={{path ('admin.recipe.remove', {id: recipe.id})}} method="post">
-                        <input type="hidden" name="_method" value="DELETE">
-                            <button class="btn btn-danger btn-sm">Supprimer</button>
-                        </form>
-                    </div>
-                </td>
+                <th>{{ knp_pagination_sortable(recipes, 'ID', 'r.id') }}</th>
+                <th>{{ knp_pagination_sortable(recipes, 'Titre', 'r.title') }}</th>
+                <th>{{ knp_pagination_sortable(recipes, 'Catégorie', 'c.name') }}</th>
+                <th></th>
+                <th style="width: 200px;">Actions</th>
             </tr>
-        {% endfor %}
-    </tbody>
+        </thead>
+        <tbody>
+            {% for recipe in recipes %}
+                <tr>
+                    <td>{{ recipe.id }}</td>
+                    <td>
+                        <a href="{{ url('admin.recipe.edit', {id: recipe.id }) }}">{{ recipe.title }}</a>
+                    </td>
+                    <td>
+                        {{ recipe.category.name | default('') }}
+                    </td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <a class="btn btn-primary btn-sm" href="{{ url('admin.recipe.edit', {id: recipe.id }) }}">Editer</a>
+                            <form action={{path ('admin.recipe.remove', {id: recipe.id})}} method="post">
+                            <input type="hidden" name="_method" value="DELETE">
+                                <button class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
+
+    {# <div class="d-flex">
+        {% if page > 1 %}
+            <a href="{{ url('admin.recipe.index', {page: page - 1}) }}" class="btn btn-secondary">Page précédente</a>
+        {% endif %}
+
+        {% if page < maxPage %}
+            <a href="{{ url('admin.recipe.index', {page: page + 1}) }}" class="btn btn-secondary">Page suivante</a>
+        {% endif %}
+    </div> #}
+
+    {{ knp_pagination_render(recipes) }}
+
     
 {% endblock %}
