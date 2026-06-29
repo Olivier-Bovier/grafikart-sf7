@@ -34,27 +34,31 @@ class RecipeRepository extends ServiceEntityRepository
     public function findWithDurationLowerThan(int $duration): array
     {
         return $this->createQueryBuilder('r')
-        ->where('r.duration <= :duration')
-        ->orderBy('r.duration', 'ASC')
-        ->setMaxResults(10)
-        ->setParameter('duration', $duration)
-        ->getQuery()
-        ->getResult();
+            ->where('r.duration <= :duration')
+            ->orderBy('r.duration', 'ASC')
+            ->setMaxResults(10)
+            ->setParameter('duration', $duration)
+            ->getQuery()
+            ->getResult();
     }
 
-    public function paginateRecipes(int $page): PaginationInterface
+    public function paginateRecipes(int $page, ?int $userId): PaginationInterface
     {
+        $builder = $this->createQueryBuilder('r')->leftJoin('r.category', 'c')->select('r', 'c');
+        if ($userId) {
+            $builder = $builder->andWhere('r.user = :user')->setParameter('user', $userId);
+        }
 
         return $this->paginator->paginate(
-            $this->createQueryBuilder('r')->leftJoin('r.category', 'c')->select('r', 'c'),
+            $builder,
             $page,
             4,
             [
-                'distinct' => false,  
+                'distinct' => false,
                 'sortFieldAllowList' => ['r.id', 'r.title', 'c.name'],
             ]
         );
-    /* return new Paginator(
+        /* return new Paginator(
             $this->createQueryBuilder('r')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
