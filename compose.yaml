@@ -24,6 +24,8 @@ services:
       MYSQL_DATABASE: symfony_db
     ports:
       - "3306:3306"
+    volumes:
+      - database_data:/var/lib/mysql
 
   # url d'accès : http://localhost:8025
   mailer:
@@ -40,3 +42,6 @@ services:
       - "8081:8080"
     depends_on:
       - database
+
+volumes:
+  database_data:
