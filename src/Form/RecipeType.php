@@ -5,9 +5,11 @@ namespace App\Form;
 use App\Entity\Category;
 use App\Entity\Recipe;
 use App\Form\FormListenerFactory;
+use App\Form\QuantityType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -37,7 +39,21 @@ class RecipeType extends AbstractType
                 'empty_data' => ''
             ])
             ->add('duration')
-            ->add('save', SubmitType::class, [
+            ->add('Quantities', CollectionType::class, [
+                'entry_type' => QuantityType::class,
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_options' => [
+                    'label' => false
+                ],
+                'attr' => [
+                    //'data-controller' => 'form-collection',
+                    'data-form-collection-add-label-value' => 'Ajouter un ingrédient',
+                    'data-form-collection-delete-label-value' => 'Supprimer un ingrédient'
+                ]
+            ])
+                        ->add('save', SubmitType::class, [
                 'label' => 'Enregistrer'
             ])
             ->addEventListener(FormEvents::PRE_SUBMIT, $this->listenerFactory->autoSlug('title'))
